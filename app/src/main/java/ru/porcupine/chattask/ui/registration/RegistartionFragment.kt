@@ -1,4 +1,4 @@
-package ru.porcupine.chattask
+package ru.porcupine.chattask.ui.registration
 
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -9,7 +9,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import ru.porcupine.chattask.R
 import ru.porcupine.chattask.databinding.FragmentRegistrationBinding
+import ru.porcupine.chattask.util.SharedViewModel
+import ru.porcupine.chattask.data.repository.UserRepository
 
 class RegistrationFragment : Fragment() {
 
@@ -17,7 +21,9 @@ class RegistrationFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val viewModel: RegistrationViewModel by viewModels()
+    private val viewModel: RegistrationViewModel by viewModels {
+        RegistrationViewModelFactory(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -40,9 +46,12 @@ class RegistrationFragment : Fragment() {
             val phoneNumber = binding.ccp.fullNumberWithPlus
 
             viewModel.registerUser(phoneNumber, name, username, {
-                // Handle success (e.g., navigate to the next screen)
+                val userRepository = UserRepository(requireContext())
+                userRepository.setShouldLoadFromServer(true)
+                findNavController().navigate(R.id.action_registrationFragment_to_main_graph)
             }, { errorMessage ->
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                println(errorMessage)
             })
         }
 

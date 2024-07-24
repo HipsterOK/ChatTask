@@ -1,4 +1,4 @@
-package ru.porcupine.chattask
+package ru.porcupine.chattask.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

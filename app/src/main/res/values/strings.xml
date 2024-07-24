@@ -1,7 +1,28 @@
 <resources>
     <string name="app_name">Chat Task</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Login">Войти</string>
     <string name="Register">Регистрация</string>
+
+    <string name="avatar_description">Фото:</string>
+    <string name="label_name">Имя:</string>
+    <string name="label_username">Никнейм:</string>
+    <string name="label_phone">Телефон:</string>
+    <string name="label_city">Город:</string>
+    <string name="label_birthday">Дата рождения:</string>
+    <string name="label_status">Статус:</string>
+    <string name="label_zodiac">Знак зодиака:</string>
+    <string name="label_instagram">Instagram:</string>
+    <string name="label_vk">Vk:</string>
+    <string name="send">Отправить</string>
+    <string name="enter_message">Введите сообщение</string>
+    <string name="change_avatar">Сменить фото</string>
+    <string name="save">Сохранить</string>
+    <string name="phone_hint">123 456 7890</string>
+    <string name="sms_code">Код из СМС</string>
+    <string name="not_register">Не зарегистрированы?</string>
+    <string name="name">Ваше имя</string>
+    <string name="username">Ваш логин</string>
+    <string name="edit">Редактировать</string>
+    <string name="user">Пользователь</string>
+    <string name="chats">Чаты</string>
 </resources>

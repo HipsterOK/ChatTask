@@ -19,6 +19,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 
     buildTypes {
@@ -46,10 +47,16 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.ccp)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.logging.interceptor)
+    implementation(libs.glide)
+    implementation(libs.threetenabp)
 }

@@ -1,15 +1,18 @@
-package ru.porcupine.chattask
+package ru.porcupine.chattask.ui.registration
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.porcupine.chattask.network.ApiService
-import ru.porcupine.chattask.network.RegisterRequest
-import ru.porcupine.chattask.network.RetrofitInstance
+import ru.porcupine.chattask.data.model.RegisterRequest
+import ru.porcupine.chattask.data.network.ApiService
+import ru.porcupine.chattask.data.network.RetrofitInstance
+import ru.porcupine.chattask.util.TokenManager
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val apiService: ApiService = RetrofitInstance.api
+    private val tokenManager = TokenManager(application)
 
     fun registerUser(
         phone: String,
@@ -28,7 +31,11 @@ class RegistrationViewModel : ViewModel() {
                 val response = apiService.registerUser(RegisterRequest(phone, name, username))
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        saveTokens(it.refreshToken, it.accessToken)
+                        val refreshToken = it.refreshToken
+                        val accessToken = it.accessToken
+
+                        tokenManager.saveRefreshToken(refreshToken)
+                        tokenManager.saveAccessToken(accessToken)
                         onSuccess()
                     }
                 } else {
@@ -43,9 +50,5 @@ class RegistrationViewModel : ViewModel() {
     private fun isUsernameValid(username: String): Boolean {
         val regex = "^[A-Za-z0-9_-]+$".toRegex()
         return username.matches(regex)
-    }
-
-    private fun saveTokens(refreshToken: String, accessToken: String) {
-        // Save tokens in shared preferences or any secure storage
     }
 }

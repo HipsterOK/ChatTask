@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationFragment">
+    tools:context=".ui.registration.RegistrationFragment">
 
 
     <com.hbb20.CountryCodePicker
@@ -30,7 +30,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:hint="Ваше имя"
+        android:hint="@string/name"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:enabled="false"
-        android:hint="123 456 7890"
+        android:hint="@string/phone_hint"
         android:inputType="phone"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +59,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:hint="Ваш логин"
+        android:hint="@string/username"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

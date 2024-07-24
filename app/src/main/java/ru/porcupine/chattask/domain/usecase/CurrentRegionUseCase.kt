@@ -1,4 +1,4 @@
-package ru.porcupine.chattask
+package ru.porcupine.chattask.domain.usecase
 
 import java.util.Locale
 

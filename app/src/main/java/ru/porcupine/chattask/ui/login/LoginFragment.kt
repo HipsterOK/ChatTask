@@ -1,17 +1,18 @@
-package ru.porcupine.chattask
+package ru.porcupine.chattask.ui.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.porcupine.chattask.databinding.FragmentLoginBinding
+import ru.porcupine.chattask.domain.usecase.CurrentRegionUseCase
+import ru.porcupine.chattask.util.SharedViewModel
 
 class LoginFragment : Fragment() {
 
@@ -20,15 +21,11 @@ class LoginFragment : Fragment() {
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val viewModel: LoginViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-                    @Suppress("UNCHECKED_CAST") return LoginViewModel(CurrentRegionUseCase()) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        }
+        LoginViewModelFactory(
+            requireActivity().application, CurrentRegionUseCase()
+        )
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,30 +42,50 @@ class LoginFragment : Fragment() {
             if (visibility) {
                 binding.codeEditText.visibility = View.VISIBLE
                 binding.notRegisterText.visibility = View.VISIBLE
+                binding.phoneNumberEditText.isEnabled = false
+                binding.ccp.setCcpClickable(false)
             } else {
                 binding.codeEditText.visibility = View.GONE
                 binding.notRegisterText.visibility = View.GONE
+                binding.phoneNumberEditText.isEnabled = true
+                binding.ccp.setCcpClickable(true)
+            }
+        }
+
+        viewModel.navigateDict.observe(viewLifecycleOwner) { dir ->
+            if (dir != 0) {
+                findNavController().navigate(dir)
+                viewModel.resetDictionary()
             }
         }
 
         binding.notRegisterText.setOnClickListener {
             sharedViewModel.setPhoneNumber(binding.phoneNumberEditText.text.toString())
             sharedViewModel.setCountryCode(binding.ccp.selectedCountryNameCode)
-            findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
+            viewModel.goToRegister()
         }
 
         binding.button.setOnClickListener {
             if (binding.phoneNumberEditText.text.isNotBlank()) {
-                val phoneNumber =
-                    binding.ccp.selectedCountryCodeWithPlus + binding.phoneNumberEditText.text.toString()
+                val phoneNumber = binding.ccp.fullNumberWithPlus
                 val code = binding.codeEditText.text.toString().takeIf { it.isNotBlank() }
-                viewModel.onClickLoginBtn(requireContext(), phoneNumber, code)
+                sharedViewModel.setPhoneNumber(binding.phoneNumberEditText.text.toString())
+                sharedViewModel.setCountryCode(binding.ccp.selectedCountryNameCode)
+                viewModel.onClickLoginBtn(phoneNumber, code)
             } else {
                 Toast.makeText(
                     requireActivity(), "Введите корректный номер телефона!", Toast.LENGTH_SHORT
                 ).show()
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (viewModel.codeVisibility.value == true) viewModel.backToPhone()
+                    else requireActivity().finish()
+                }
+            })
 
         return view
     }

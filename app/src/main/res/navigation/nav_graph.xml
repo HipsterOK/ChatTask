@@ -2,24 +2,83 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph.xml"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
-        android:name="ru.porcupine.chattask.LoginFragment"
+        android:name="ru.porcupine.chattask.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
-            app:destination="@id/registartionFragment" />
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_main_graph"
+            app:destination="@id/main_graph"
+            app:popUpTo="@id/main_graph"
+            app:popUpToInclusive="true" />
     </fragment>
+
+    <!-- Registration Fragment -->
     <fragment
-        android:id="@+id/registartionFragment"
-        android:name="ru.porcupine.chattask.RegistrationFragment"
-        android:label="RegistartionFragment">
+        android:id="@+id/registrationFragment"
+        android:name="ru.porcupine.chattask.ui.registration.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration">
         <argument
             android:name="phoneNumber"
             app:argType="string" />
+        <action
+            android:id="@+id/action_registrationFragment_to_main_graph"
+            app:destination="@id/main_graph"
+            app:popUpTo="@id/main_graph"
+            app:popUpToInclusive="true" />
     </fragment>
+
+    <!-- Main Navigation Graph -->
+    <navigation
+        android:id="@+id/main_graph"
+        app:startDestination="@id/chatListFragment">
+
+        <!-- Chat List Fragment -->
+        <fragment
+            android:id="@+id/chatListFragment"
+            android:name="ru.porcupine.chattask.ui.chatlist.ChatListFragment"
+            android:label="Чаты"
+            tools:layout="@layout/fragment_chat_list">
+            <action
+                android:id="@+id/action_chatListFragment_to_chatFragment"
+                app:destination="@id/chatFragment" />
+        </fragment>
+
+        <!-- User Info Fragment -->
+        <fragment
+            android:id="@+id/userInfoFragment"
+            android:name="ru.porcupine.chattask.ui.userinfo.UserInfoFragment"
+            android:label="Пользователь"
+            tools:layout="@layout/fragment_user_info" >
+            <action
+                android:id="@+id/action_userInfoFragment_to_editProfileFragment"
+                app:destination="@id/editProfileFragment" />
+        </fragment>
+
+        <!-- Chat Fragment -->
+        <fragment
+            android:id="@+id/chatFragment"
+            android:name="ru.porcupine.chattask.ui.chat.ChatFragment"
+            android:label="fragment_chat"
+            tools:layout="@layout/fragment_chat">
+            <argument
+                android:name="chatId"
+                app:argType="string" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/editProfileFragment"
+            android:name="ru.porcupine.chattask.ui.editprofile.EditProfileFragment"
+            android:label="EditProfileFragment" />
+
+    </navigation>
 </navigation>
